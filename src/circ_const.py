@@ -27,22 +27,27 @@ def RY_multi(angle,control,values,r_qubit):
     qml.ctrl(base,control,values)
 
 #MAY NEED TO REVESE THE STRINGS
-def general_state_prep(k,angles):
+def general_state_prep(k,angles,start_qubit=0):
     '''
-
     :param k:
     :param angles:
     :return:
     '''
     for i in range(k):
         if i == 0:
-            qml.RY(angles[0],wires=0)
+            qml.RY(angles[0],wires=start_qubit)
         else:
             control_values = tuple_binary_strings(i)
             temp_angles =angles[i]
-            control_bits = tuple(range(0, i))
+            control_bits = tuple(range(start_qubit, start_qubit+i))
             for j in range(pow(2,i)):
-                RY_multi(temp_angles[j],control_bits,control_values[j],i)
+                RY_multi(temp_angles[j],control_bits,control_values[j],start_qubit+i)
+
+def fixed_rotation(condition,control_bit,theta_values,start_qubit):
+    for count,i in enumerate(condition):
+        control_bits = tuple(range(control_bit, control_bit+len(i)))
+        RY_multi(theta_values[count],control_bits,i,start_qubit)
+
 
 
 
