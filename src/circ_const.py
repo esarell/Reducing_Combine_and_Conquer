@@ -48,6 +48,29 @@ def fixed_rotation(condition,control_bit,theta_values,start_qubit):
         control_bits = tuple(range(control_bit, control_bit+len(i)))
         RY_multi(theta_values[count],control_bits,i,start_qubit)
 
+def Fidelity(expected_amps,measured_amps):
+    """
 
+    :param expected_amps: list of the amplitudes from the discritsed function
+    :param measured_amps: list of amplitudes taken from the statevector of the quantum circuit
+    :return: the fidelity (float)
+    """
+    current =0
+    for count,i in enumerate(expected_amps):
+        current = current+(i*measured_amps[count])
 
+    fidelity = current*current
+    return fidelity
+
+def amp_normalised(data):
+    """
+
+    :param data:
+    :return:
+    """
+    result=[]
+    for x in data:
+        norm = np.sqrt(x/sum(data))
+        result.append(norm)
+    return result
 
